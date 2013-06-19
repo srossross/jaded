@@ -1,23 +1,42 @@
 Jaded Rich Application Client
 =================================
 
+### Jaded PipeLine
+
+* Jaded Template
+
 ### Examples
+
 
 #### hello.jd
 
 ```jade
 // This is a standard jade template
 doctype xml
-jd:Application(layout="vertical", creationComplete="self.initApp()")
-    jd:python 
-      :cdata
-        def initApp(self):
-            # says hello at the start, and asks for the user's name
-            
-            self.my_greeter = Greeter()
-            self.mainTxt.text = self.my_greeter.say_hello()
+jd:Application
 
-    jd:TextArea(id="mainTxt", width=400)
+    jd:TextInput(id="myTI" text="Enter text here")
+    jd:Text(text="{myTI.text}")
+    
+    // Can embed raw HTML
+    a(href="http://example.com")
+        Link Text
+    
+    //OR
+    <a href="http://example.com">
+        Link Text
+    </a>
+    
+```
+
+```xml
+<?xml version="1.0"?>
+<!-- binding/BasicBinding.mxml -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+
+    <mx:TextInput id="myTI" text="Enter text here"/>
+    <mx:Text id="myText" text="{myTI.text}"/>
+</mx:Application>
 ```
 
 The same module in pure python:
@@ -26,27 +45,22 @@ The same module in pure python:
 
 import jaded as jd
 
-class App(jd.Application):
+mainTxt = jd.TextArea(id="mainTxt", width=400)
 
-    def __init__(layout="vertical"):
-        self.creationComplete(self.initApp)
-        self.mainTxt = MainTxt(width=400)
-    
-    def initApp(self):
-        
-        self.mainTxt = jd.TextArea(width=400)
-        self.add_child(self.mainTxt)
-        
-        # says hello at the start, and asks for the user's name
-        self.my_greeter = Greeter()
-        self.mainTxt.text = self.my_greeter.say_hello()
+def initApp():
+            
+    # says hello at the start, and asks for the user's name
+    my_greeter = Greeter()
+    mainTxt.text = my_greeter.say_hello()
 
-
+app = jd.Application(layout="vertical", creationComplete=initApp)
+app.addElement(mainTxt)
 ```
 
 #### command line
 
 ```bash
+
 # Serve as a web application
 jaded serve hello.jd --port 8080
 
@@ -55,6 +69,51 @@ jaded run hello.jd
 
 # Build Bundle for sharing (probably using conda)
 jaded bundle hello.jd
+```
+
+
+
+#### Form Example
+
+```jade
+doctype xml
+// containers\layouts\FormDataSubmitNoArg.jd 
+jd:Application
+    jd:python
+        cdata:
+            def process_values():
+                inputZip = zipCode.text
+                inputPhone = phoneNumber.text
+                # Check to see if pn is a number.
+                # Check to see if zip is less than 4 digits.
+                # Process data.
+                
+    jd:Form(id="myForm" defaultButton="{mySubmitButton}")
+
+        jd:FormItem(label="ZIP Code")
+            jd:TextInput(id="zipCode")
+        jd:FormItem(label="Phone Number")
+            jd:TextInput(id="phoneNumber")
+            
+        jd:FormItem
+            jd:Button(label="Submit" id="mySubmitButton" click="process_values()" )
 
 ```
 
+
+#### Ebmed Native HTML (Jade is a superset of HTML)
+
+```jade
+// This is a standard jade template
+doctype xml
+jd:Application
+    
+    // Can embed jad style html
+    a(href="http://example.com")
+        Link Text
+    
+    // OR raw HTML
+    <a href="http://example.com">
+        Link Text
+    </a>    
+```
