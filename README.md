@@ -18,15 +18,6 @@ jd:Application
     jd:TextInput(id="myTI" text="Enter text here")
     jd:Text(text="{myTI.text}")
     
-    // Can embed raw HTML
-    a(href="http://example.com")
-        Link Text
-    
-    //OR
-    <a href="http://example.com">
-        Link Text
-    </a>
-    
 ```
 
 ```xml
