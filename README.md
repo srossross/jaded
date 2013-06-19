@@ -5,8 +5,7 @@ Jaded Rich Application Client
 
 * Jaded Template
 
-### Examples
-
+### Hello world example
 
 #### hello.jd
 
@@ -20,35 +19,36 @@ jd:Application
     
 ```
 
-```xml
-<?xml version="1.0"?>
-<!-- binding/BasicBinding.mxml -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
-
-    <mx:TextInput id="myTI" text="Enter text here"/>
-    <mx:Text id="myText" text="{myTI.text}"/>
-</mx:Application>
-```
-
-The same module in pure python:
+The same module can be written in pure python:
 
 ```python
 
 import jaded as jd
+import traty as ty
 
-mainTxt = jd.TextArea(id="mainTxt", width=400)
+myTI = jd.TextInput(text="Enter text here")
+myText = jd.TextArea(text="")
 
-def initApp():
-            
-    # says hello at the start, and asks for the user's name
-    my_greeter = Greeter()
-    mainTxt.text = my_greeter.say_hello()
+ty.events(myTI).text.on('change', lambda value: setattr(myText,'text', value))
 
-app = jd.Application(layout="vertical", creationComplete=initApp)
-app.addElement(mainTxt)
+app = jd.Application()
+app.addElement(myTI)
+app.addElement(myText)
+
 ```
 
-#### command line
+
+### Data Binding
+
+Data binding is the process of tying the data in one object to another object. 
+It provides a convenient way to pass data between the different layers of the application.
+Data binding requires a source property, a destination property, 
+and a triggering event that indicates when to copy the data from the source 
+to the destination. An object dispatches the triggering event when the source property changes.
+
+Jaded provides specifies data binding with the curly braces `{ }` as in the above example `{myTI.text}` 
+
+### Running A Jaded Application
 
 ```bash
 
@@ -68,7 +68,6 @@ jaded bundle hello.jd
 
 ```jade
 doctype xml
-// containers\layouts\FormDataSubmitNoArg.jd 
 jd:Application
     jd:python
         cdata:
