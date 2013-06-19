@@ -3,7 +3,12 @@ Jaded Rich Application Client
 
 ### Jaded PipeLine
 
-* Jaded Template
+``` 
+Jade Template -> XML -> Python pyc +-> Frontend HTML + Javascript
+                                   \-> Backend Traty event models + Http Server
+```
+
+
 
 ### Hello world example
 
